@@ -7,12 +7,21 @@ Features
   Capture Photos: Enables users to capture and store face images for training.
 
 Train Data: Processes captured images to create face embeddings for recognition.
+
 Recognize Face: Identifies faces in real-time and marks attendance.
+
 Show Attendance: Exports attendance records into an Excel file for easy access.
+
 Technologies Used
+
 Programming Language: Python
+
 GUI Framework: Tkinter
+
 Computer Vision: OpenCV, Face Recognition
+
 Data Processing: Pandas, JSON, NumPy
+
 Text-to-Speech: pyttsx3
+
 Storage: JSON (for attendance logs), Excel (for exported records)
