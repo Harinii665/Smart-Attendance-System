@@ -826,7 +826,135 @@ public class LeftFactoring {
 		S->Sa|Sb|Sc
 		S->SS'
 		S'->a|b|c
+
+
+
+     	      6] import java.util.*;
+
+			public class Main {
+			    static Map<Character, List<String>> grammar = new HashMap<>();
+			    static String input;
+			    static int i = 0;
+			
+			    static boolean parse(char nonTerminal) {
+			        int backtrack = i;
+			        for (String prod : grammar.get(nonTerminal)) {
+			            i = backtrack;
+			            boolean success = true;
+			            for (char symbol : prod.toCharArray()) {
+			                if (symbol == '@') continue;
+			                else if (Character.isUpperCase(symbol)) success &= parse(symbol);
+			                else if (i < input.length() && input.charAt(i) == symbol) i++;
+			                else { success = false; break; }
+			            }
+			            if (success) return true;
+			        }
+			        return false;
+			    }
+			       public static void main(String[] args) {
+			        Scanner sc = new Scanner(System.in);
+			        System.out.println("Enter number of productions:");
+			        int n = sc.nextInt();
+			        sc.nextLine();
+			        System.out.println("Enter productions (Use '@' for epsilon, e.g., A->aA|@):");
+			        for (int j = 0; j < n; j++) {
+			            String[] rule = sc.nextLine().split("->");
+			            grammar.put(rule[0].charAt(0), Arrays.asList(rule[1].split("\\|")));
+			        }
+			        System.out.println("Enter the string to check:");
+			        input = sc.next() + "$";
+			        System.out.println(parse('E') && i == input.length() - 1 ? "String is accepted" : "String is rejected");
+			    }
+			}
+			
+			output::
+			
+			Enter number of productions:
+			5
+			Enter productions (Use '@' for epsilon, e.g., A->aA|@):
+			E->TA
+			A->+TA|@
+			T->FB
+			B->*FB|@
+			F->(E)|i
+			Enter the string to check:
+			i+i*i
+			String is accepted
+		7] import java.util.*;
+
+	public class Shift_Reduce {
+	    public static void main(String[] args) {
+	        Scanner sc = new Scanner(System.in);
+
+        System.out.print("No.of production : ");
+        int n = sc.nextInt();
+        sc.nextLine(); 
+        String lhs[]=new String[n];
+        String rhs[]=new String[n];
+
+        System.out.println("Grammar : ");
+        for (int i = 0; i < n; i++) {
+            String[] p = sc.nextLine().split("->");
+            lhs[i]=p[0];
+            rhs[i]=p[1];
+        }
+        
+        System.out.print("String : ");
+        String inp = sc.nextLine();
+
+        System.out.println("\nStack\tInputBuffer\tAction");
+        String stk="";
+        while (true) {
+            char ch = inp.charAt(0);
+            stk += ch;
+            inp=inp.substring(1);
+            System.out.println(stk + "\t\t" + inp+"\t\tShift " + ch);
+
+            for (int j = 0; j < n; j++) {
+                int idx = stk.indexOf(rhs[j]);
+                if (idx != -1) {
+                    stk = stk.substring(0, idx) + lhs[j];
+                    System.out.println(stk+"\t\t"+inp+"\t\tReduce " + lhs[j] + "->" + rhs[j]);
+                    j = -1; 
+                }
+            }
+
+       if (stk.equals(lhs[0]) && inp.length()==0) {
+                System.out.println("Accepted");
+                break;
+            }
+            if (inp.length()==0) {
+                System.out.println("Not Accepted");
+                break;
+            }
+        }
+    }
+		}
 		
+		output:
+		
+		No.of production : 4
+		Grammar : 
+		E->E+E
+		E->E*E
+		E->(E( )
+		E->i
+		String : i*i+i
+		
+		Stack	InputBuffer	Action
+		i		*i+i		Shift i
+		E		*i+i		Reduce E->i
+		E*		i+i		Shift *
+		E*i		+i		Shift i
+		E*E		+i		Reduce E->i
+		E		+i		Reduce E->E*E
+		E+		i		Shift +
+		E+i				Shift i
+		E+E				Reduce E->i
+		E				Reduce E->E+E
+		Accepted
+			
+
 		8] 
 		import java.util.*;
 		
@@ -922,3 +1050,5 @@ public class LeftFactoring {
 		$E+E		$$		REDUCE
 		$E		$$		REDUCE
 		Accepted.
+\
+     
