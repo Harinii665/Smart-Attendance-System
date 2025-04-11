@@ -25,7 +25,34 @@
 		Text-to-Speech: pyttsx3
 		
 		Storage: JSON (for attendance logs), Excel (for exported records)
-		
+
+
+
+  import java.util.*;
+
+public class LeftFactoring {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt(); sc.nextLine();
+        for (int i = 0; i < n; i++) {
+            String[] parts = sc.nextLine().split("->");
+            String lhs = parts[0].trim(), rhs[] = parts[1].split("\\|");
+            String prefix = findCommonPrefix(rhs);
+            if (!prefix.isEmpty()) {
+                System.out.println(lhs + "->" + prefix + lhs + "'");
+                System.out.println(lhs + "'->" + String.join("|", Arrays.stream(rhs)
+                        .map(r -> r.startsWith(prefix) ? r.substring(prefix.length()) : r)
+                        .toArray(String[]::new)));
+            }
+        }
+    }
+
+    private static String findCommonPrefix(String[] rhs) {
+        String prefix = rhs[0];
+        for (String r : rhs) while (r.indexOf(prefix) != 0) prefix = prefix.substring(0, prefix.length() - 1);
+        return prefix;
+    }
+}
 		
 		5] import java.util.*;
 		import java.io.*;
